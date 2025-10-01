@@ -107,7 +107,11 @@ body {
     border-bottom: solid 5px grey;
     border-right: solid 5px grey;
 
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px;
+    gap: 10px;
 }
 
 .gameInfo{
@@ -146,7 +150,7 @@ body {
     font-family: 'Share Tech Mono', monospace;
     font-size: 30px;
     color: red;
-    
+
     display: flex;
     text-align: center;
     align-items: center;
@@ -155,4 +159,15 @@ body {
     
     padding: 0px 5px 0px 5px;
     margin: 0;
+}
+
+.board{
+    height: 100%;
+    padding: 8px;
+
+    /* Borders */
+    border-top: solid 5px grey;
+    border-left: solid 5px grey;
+    border-bottom: solid 5px white;
+    border-right: solid 5px white;
 }
