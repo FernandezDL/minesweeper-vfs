@@ -1,0 +1,103 @@
+header {
+    height: 100px;
+    background-color: #a0346e;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    position: relative;
+}
+
+header .imgLogo {
+    position: absolute;
+    left: 20px;
+}
+
+header h1 {
+    margin: 0 auto;
+    color: white;
+    font-size: 40px;
+    text-align: center;
+}
+
+footer{
+    height: 60px;
+    background-color: none;
+    text-align: center;
+    gap: 0px;
+}
+
+footer h6{
+    color: black;
+    font-size: 14px;
+    text-align: center;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f7ddd0;
+}
+
+.imgLogo {
+    height: 80px;
+    width: 90px;
+}
+
+.layout{
+    display: grid;
+    grid-template-columns: 80px 1fr 200px;
+
+    padding: 10px;
+    gap: 24px;
+}
+
+.sidebar{
+    background: #bdbdbd;
+    position: sticky;
+    
+    padding: 5px;
+
+    /* Borders */
+    border-top: solid 5px white;
+    border-left: solid 5px white;
+    border-bottom: solid 5px grey;
+    border-right: solid 5px grey;
+}
+
+.sidebar button{
+    background: #bdbdbd;
+    padding: 10px;
+
+    margin: 5px;
+
+    /* Borders */
+    border-top: solid 5px white;
+    border-left: solid 5px white;
+    border-bottom: solid 5px grey;
+    border-right: solid 5px grey;
+
+    justify-content: center;
+    text-align: center;
+}
+
+.sidebar img{
+    height: 25px;
+    width: 25px;
+}
+
+.sidebar h2{
+    text-align: center;
+    top: 0;
+    
+    padding: 10px;
+    margin: 0;
+    border-bottom: dashed 2px black;
+}
+
+.gameBoard{
+    background: blue;
+}
