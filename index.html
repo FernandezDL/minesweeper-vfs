@@ -17,7 +17,8 @@
 
 		<!-- ***** LAYOUT **** -->
 		<div class="layout">
-            <div class="sidebar">
+            <!-- sidebar with the buttons for various actions -->
+            <div class="sidebar"> 
                 <button>
                     <img src="img/sidebar/acercarse.png" alt="zoom in">
                 </button>
@@ -41,22 +42,29 @@
                 </button>
             </div>
 
+            <!-- Game board space -->
 			<div class="gameBoard">
+                <!-- game header - gameinformation -->
                 <div class="gameInfo">
+                    <!-- Timer display -->
                     <div class="sevenSegDisplay">000</div>
 
+                    <!-- Reset button -->
                     <button class="resetButton">
                         <img src="img/sidebar/carita.png" alt="Reset game">
                     </button>
-                    
+
+                    <!-- Mine counter display -->
                     <div class="sevenSegDisplay">000</div>
                 </div>
+                
                 <div class="board">
                     <!-- Game board will be generated here -->
                 </div>
                 
             </div>
 
+            <!-- Sidebar with best scores -->
             <div class="sidebar">
                 <h2>Best scores</h2>
             </div>
