@@ -1,9 +1,9 @@
-  <html lang="en">
+  <html>
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="CSS/style.css">
         <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
         <title>Mine Sweeper</title>
     </head>
@@ -50,7 +50,7 @@
                     <div class="sevenSegDisplay">000</div>
 
                     <!-- Reset button -->
-                    <button class="resetButton">
+                    <button id="reset" class="resetButton">
                         <img src="img/sidebar/carita.png" alt="Reset game">
                     </button>
 
@@ -58,7 +58,7 @@
                     <div class="sevenSegDisplay">000</div>
                 </div>
                 
-                <div class="board">
+                <div id="game-container">
                     <!-- Game board will be generated here -->
                 </div>
                 
@@ -75,5 +75,7 @@
 			<h6>© 2025</h6>
 			<h6>Made with ♥ by Diana Fernández</h6>
 		</footer>
+
+        <script type="module" src="JS/script.js"></script>
     </body>
 </html>
