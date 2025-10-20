@@ -25,16 +25,15 @@ class GameLogic {
             return;
         }
 
-        //console.log(cell);
         cell.adjacentMines = this.checkAdjacentMines(index);
-        cell.textContent = cell.adjacentMines > 0 ? cell.adjacentMines : '';
+        cell.innerText = cell.adjacentMines > 0 ? cell.adjacentMines : '';
+        this.gameBoard.renderBoard('game-container');
         console.log(cell);
-        this.gameBoard.updateCell(index, cell.adjacentMines);
 
-        if (this.checkWin()) {
-            this.gameOver = true;
-            if (this.statusEl) this.statusEl.textContent = 'You Win!';
-        }
+        //if (this.checkWin()) {
+        //    this.gameOver = true;
+        //    if (this.statusEl) this.statusEl.textContent = 'You Win!';
+        //}
     }
 
     checkWin = () => {

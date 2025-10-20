@@ -25,16 +25,9 @@ class GameBoard{
 			const cell = document.createElement('div');
 			cell.classList.add('cell');
 			cell.dataset.index = index;
-			cell.textContent = '';
+			cell.textContent = this.board[index].innerText || '';
 			container.appendChild(cell);
 		}
-	}
-
-	updateCell(index, value) {
-		//console.log(this.board[index]);
-
-		this.board[index] = value;
-
 	}
 
 	reset(){
