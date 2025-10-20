@@ -55,12 +55,11 @@ body {
     gap: 24px;
 }
 
-.sidebar{
+.sidebar {
+    height: fit-content;
     background: #bdbdbd;
     position: sticky;
-    
     padding: 5px;
-
     /* Borders */
     border-top: solid 5px white;
     border-left: solid 5px white;
@@ -96,6 +95,10 @@ body {
     padding: 10px;
     margin: 0;
     border-bottom: dashed 2px black;
+}
+
+.bestScores{
+    height: 100vh;
 }
 
 .gameBoard{

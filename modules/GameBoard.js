@@ -5,8 +5,17 @@ class GameBoard{
 		this.board = this.createBoard();
 	}
 
+	makeCell =()=>{
+		return {
+			isRevealed: false,
+			isMine: false,
+            flagged: false,
+			adjacentMines: 0
+		};
+	}
+
 	createBoard(){
-		return Array.from({length: this.rows * this.cols}, () => '');
+		return Array.from({length: this.rows * this.cols}, () => this.makeCell());
 	}
 
 	renderBoard(containerId){
@@ -16,13 +25,16 @@ class GameBoard{
 			const cell = document.createElement('div');
 			cell.classList.add('cell');
 			cell.dataset.index = index;
-			cell.textContent = this.board[index] || '';
+			cell.textContent = '';
 			container.appendChild(cell);
 		}
 	}
 
-	updateCell(index, value){
-		this.board[index] = value;
+	updateCell(index, value) {
+		console.log(this.board[index]);
+
+		this.board[index] = value.adjacentMines;
+
 	}
 
 	reset(){

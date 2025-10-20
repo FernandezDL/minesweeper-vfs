@@ -1,5 +1,5 @@
 import GameBoard from '../modules/GameBoard.js';
-import UserInput from '../modules/GameLogic.js';
+import UserInput from '../modules/UserInput.js';
 import GameLogic from '../modules/GameLogic.js';
 
 class GameEngine {
@@ -9,7 +9,8 @@ class GameEngine {
         //Decorator pattern
         this.gameBoard = new GameBoard(15, 15);
         this.gameLogic = new GameLogic(this.gameBoard);
-        this.userInput = new UserInput(this.GameLogic);
+        this.userInput = new UserInput(this.gameLogic);
+        console.log(this.userInput);
 
         this.statusEl = document.getElementById('status');
         this.resetBtn = document.getElementById('reset');
