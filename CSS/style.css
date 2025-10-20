@@ -149,6 +149,10 @@ body {
     width: 30px;
 }
 
+#reset {
+    cursor: pointer;
+}
+
 .sevenSegDisplay {
     font-family: 'Share Tech Mono', monospace;
     font-size: 30px;

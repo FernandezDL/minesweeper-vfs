@@ -31,9 +31,9 @@ class GameBoard{
 	}
 
 	updateCell(index, value) {
-		console.log(this.board[index]);
+		//console.log(this.board[index]);
 
-		this.board[index] = value.adjacentMines;
+		this.board[index] = value;
 
 	}
 
