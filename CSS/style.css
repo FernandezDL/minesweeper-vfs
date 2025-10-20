@@ -202,3 +202,13 @@ body {
     border-bottom: solid 5px grey;
     border-right: solid 5px grey;
 }
+
+    .cell.isRevealed {
+        background: #e0e0e0;
+        cursor: default;
+        /* Borders */
+        border-bottom: solid 5px white;
+        border-right: solid 5px white;
+        border-top: solid 5px grey;
+        border-left: solid 5px grey;
+    }
