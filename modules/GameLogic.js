@@ -141,6 +141,15 @@ class GameLogic {
         return count;
     }
 
+    toggleFlag(index){
+        console.log(`Toggling flag on cell ${index}`);
+		const cell = this.gameBoard.board[index];
+		if (!cell || cell.isRevealed) return;
+		cell.flagged = !cell.flagged;
+		cell.innerText = cell.flagged ? 'F' : '';
+		this.gameBoard.renderBoard('game-container');
+	}
+
     reset = () => {
         this.gameOver = false;
         this.gameBoard.reset();
