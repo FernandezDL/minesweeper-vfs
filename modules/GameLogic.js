@@ -43,6 +43,8 @@ class GameLogic {
         } else { // if there are adjacent mines
             this.gameBoard.renderBoard('game-container'); // render board
         }
+
+        this.checkWin(); // Check wining condition
     }
 
     floodReveal(index) {
@@ -107,49 +109,62 @@ class GameLogic {
         return neighbors;
     }
 
-
     checkWin = () => {
-        const brd = this.gameBoard.board;
+        if (this.gameOver) return;
 
-        // TODO: validar que esten abiertas cellTotal - minas
-        //this.board.length - 15
-        return false;
+        const brd = this.gameBoard.board; // get board
+        const mines = 20;
+
+        let safeRevealed = 0;
+        for (const cell of brd) { // check all cells in the board
+            if (cell.isRevealed && !cell.isMine) safeRevealed++; // if the cell is revealed and not a mine, increase the counter
+        }
+
+        if (safeRevealed === brd.length - mines) { // if the counter equals the amount of safe cells (total cells minus mines)
+            this.gameOver = true; // set game over to true
+            const resetBtn = document.getElementById('reset'); // get the reset button
+            if (resetBtn) resetBtn.classList.add('is-win'); // change the image
+        }
     }
 
     placeMines = (mineCount) => {
-        const brd = this.gameBoard.board;
-        let placedMines = 0;
-        while (placedMines < mineCount) {
-            const index = Math.floor(Math.random() * brd.length);
-            if (!brd[index].isMine) {
-                brd[index].isMine = true;
-                placedMines++;
+        const brd = this.gameBoard.board; // get board
+        let placedMines = 0; // initialize counter
+        while (placedMines < mineCount) { // while we have placed less mines than specified
+            const index = Math.floor(Math.random() * brd.length); // Get a random index
+            if (!brd[index].isMine) { // if that index is not already a mine
+                brd[index].isMine = true; // set the cell to mine
+                placedMines++; // increase the counter
             }
         }
     }
 
     checkAdjacentMines = (index) => {
         let count = 0;
-        for (const n of this.getNeighbors(index)) {
-            if (this.gameBoard.board[n].isMine) count++;
+        for (const n of this.getNeighbors(index)) { // for all neighboring cells
+            if (this.gameBoard.board[n].isMine) count++; // if the neighboring cell is a mine, increase counter
         }
+
         return count;
     }
 
     toggleFlag(index){
-		const cell = this.gameBoard.board[index];
-		if (!cell || cell.isRevealed) return;
-		cell.flagged = !cell.flagged;
-		this.gameBoard.renderBoard('game-container');
+		const cell = this.gameBoard.board[index]; // get cell
+		if (!cell || cell.isRevealed) return; // if the cell is revealed, skip
+		cell.flagged = !cell.flagged; // change between states
+		this.gameBoard.renderBoard('game-container'); // render board
 	}
 
     reset = () => {
         this.gameOver = false;
-        const resetBtn = document.getElementById('reset');
-        if (resetBtn) resetBtn.classList.remove('is-gameover');
-        this.gameBoard.reset();
-        this.placeMines(20);
-        if (this.statusEl) this.statusEl.textContent = '';
+        const resetBtn = document.getElementById('reset'); // get the reset button
+        if (resetBtn) {
+            resetBtn.classList.remove('is-gameover'); // clean the game over state
+            resetBtn.classList.remove('is-win'); // clean the win state
+        }
+
+        this.gameBoard.reset(); // reset game
+        this.placeMines(20); // place 20 mines
     }
 }
 

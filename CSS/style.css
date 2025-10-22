@@ -160,6 +160,15 @@ body {
     cursor: pointer;
 }
 
+.resetButton.is-win{
+    /* Image */
+    background-image: url('../img/sidebar/ganar.png');
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
 .gameInfo img{
     height: 30px;
     width: 30px;
