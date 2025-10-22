@@ -242,7 +242,14 @@ body {
         border-left: solid 5px grey;
         color: black;
     }
-
+    
+    .cell.isRevealed[data-count="1"] { color: blue;}
+    .cell.isRevealed[data-count="2"] { color: green;}
+    .cell.isRevealed[data-count="3"] { color: red;}
+    .cell.isRevealed[data-count="4"] { color: purple;}
+    .cell.isRevealed[data-count="5"] { color: yellow;}
+    .cell.isRevealed[data-count="6"] { color: cyan;}
+    
     .cell.flagged { 
         background-image: url('../img/sidebar/bandera.png'); 
         background-size: contain;

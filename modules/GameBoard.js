@@ -27,6 +27,11 @@ class GameBoard{
 			cell.classList.toggle('isRevealed', this.board[index].isRevealed);
 			cell.classList.toggle('flagged', this.board[index].flagged);
 			cell.classList.toggle('isMine', this.board[index].isRevealed && this.board[index].isMine);
+
+			// colors for the adjacent mines number
+			const mines = this.board[index].adjacentMines ?? 0;
+			cell.dataset.count = (this.board[index].isRevealed && mines > 0 && !this.board[index].isMine) ? String(mines) : 0;
+			
 			cell.dataset.index = index;
 			cell.textContent = this.board[index].innerText || '';
 			container.appendChild(cell);
