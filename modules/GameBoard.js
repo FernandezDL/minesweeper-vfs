@@ -25,10 +25,13 @@ class GameBoard{
 			const cell = document.createElement('div');
 			cell.classList.add('cell');
 			cell.classList.toggle('isRevealed', this.board[index].isRevealed);
+			cell.classList.toggle('flagged', this.board[index].flagged);
+			cell.classList.toggle('isMine', this.board[index].isRevealed && this.board[index].isMine);
 			cell.dataset.index = index;
 			cell.textContent = this.board[index].innerText || '';
 			container.appendChild(cell);
 		}
+
 	}
 
 	reset(){

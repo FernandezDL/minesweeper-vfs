@@ -130,7 +130,7 @@ body {
     border-right: solid 5px white;
 }
 
-.gameInfo button{
+.resetButton{
     background: transparent;
 
     width: 50px;
@@ -142,6 +142,22 @@ body {
     border-left: solid 3px white;
     border-bottom: solid 3px grey;
     border-right: solid 3px grey;
+
+    /* Image */
+    background-image: url('../img/sidebar/carita.png');
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+}
+
+.resetButton.is-gameover{
+    /* Image */
+    background-image: url('../img/sidebar/triste.png');
+    background-size: 40px 40px;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
 }
 
 .gameInfo img{
@@ -215,4 +231,12 @@ body {
         color: black;
     }
 
-    .cell.flagged { background: #ffdede; }
+    .cell.flagged { 
+        background-image: url('../img/sidebar/bandera.png'); 
+        background-size: contain;
+    }
+
+    .cell.isMine{
+        background-image: url('../img/sidebar/mina.png');
+        background-size: contain;
+    }

@@ -25,6 +25,9 @@ class GameLogic {
                 if(cell.isMine) cell.isRevealed = true; // reveals all the mines
             }
             
+            const resetBtn = document.getElementById('reset');
+            if (resetBtn) resetBtn.classList.add('is-gameover');
+
             this.gameBoard.renderBoard('game-container'); // render board
             return;
         }
@@ -142,8 +145,10 @@ class GameLogic {
 
     reset = () => {
         this.gameOver = false;
+        const resetBtn = document.getElementById('reset');
+        if (resetBtn) resetBtn.classList.remove('is-gameover');
         this.gameBoard.reset();
-        this.placeMines(15);
+        this.placeMines(20);
         if (this.statusEl) this.statusEl.textContent = '';
     }
 }
