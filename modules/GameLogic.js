@@ -4,6 +4,14 @@ class GameLogic {
         this.gameOver = false;
         this.statusEl = document.getElementById('status');
         this.placeMines(20);
+
+        // --- Timer ---
+        this.timerEl = document.getElementById('timerDisplay');
+        this.timerId = null;
+        this.timerStarted = false;
+        this.startAt = 0;   // timestamp in ms
+        this.elapsed = 0; 
+        this.renderTimer(0);
     }
 
     makeMove(index) {
@@ -18,6 +26,8 @@ class GameLogic {
         const cell = this.gameBoard.board[index]; // get cell
         if (!cell || cell.isRevealed || cell.flagged) return; // if invalid, revealed or flagged, don't do anything
 
+        this.startTimer();
+        
         if (cell.isMine) { // if it's a mine
             this.gameOver = true; // set game over
 
@@ -28,6 +38,7 @@ class GameLogic {
             const resetBtn = document.getElementById('reset');
             if (resetBtn) resetBtn.classList.add('is-gameover');
 
+            this.stopTimer(); // stop timer
             this.gameBoard.renderBoard('game-container'); // render board
             return;
         }
@@ -122,6 +133,7 @@ class GameLogic {
 
         if (safeRevealed === brd.length - mines) { // if the counter equals the amount of safe cells (total cells minus mines)
             this.gameOver = true; // set game over to true
+            this.stopTimer(); // stop timer
             const resetBtn = document.getElementById('reset'); // get the reset button
             if (resetBtn) resetBtn.classList.add('is-win'); // change the image
         }
@@ -155,6 +167,43 @@ class GameLogic {
 		this.gameBoard.renderBoard('game-container'); // render board
 	}
 
+    renderTimer(seconds) {
+        const s = Math.min(999, Math.max(0, Math.floor(seconds)));
+        if (this.timerEl) this.timerEl.textContent = s.toString().padStart(3, '0'); // change text
+    }
+    
+    startTimer() {
+        if (this.timerStarted) return; // If the timer has start, don't start again
+
+        this.timerStarted = true; // set flag to true
+        this.startAt = Date.now() - this.elapsed; // set start time
+
+        this.timerId = setInterval(() => {
+            const seconds = (Date.now() - this.startAt) / 1000;
+            this.renderTimer(seconds); // render time
+            if (seconds >= 999) this.stopTimer(); // time limit
+        }, 1000);
+    }
+
+    stopTimer() {
+        if (this.timerId) clearInterval(this.timerId);
+        this.timerId = null;
+        this.elapsed = Date.now() - this.startAt; // total time
+        this.timerStarted = false; // set flag to false
+    }
+
+    resetTimer() {
+        // restart all values
+        if (this.timerId) clearInterval(this.timerId);
+        this.timerId = null;
+
+        this.timerStarted = false; // set flag to false
+        this.startAt = 0; 
+        this.elapsed = 0;
+
+        this.renderTimer(0); // render the timer at 000
+    }
+    
     reset = () => {
         this.gameOver = false;
         const resetBtn = document.getElementById('reset'); // get the reset button
@@ -162,6 +211,8 @@ class GameLogic {
             resetBtn.classList.remove('is-gameover'); // clean the game over state
             resetBtn.classList.remove('is-win'); // clean the win state
         }
+
+        this.resetTimer(); // reset timer
 
         this.gameBoard.reset(); // reset game
         this.placeMines(20); // place 20 mines
