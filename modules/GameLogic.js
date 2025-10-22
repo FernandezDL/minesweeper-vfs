@@ -7,40 +7,35 @@ class GameLogic {
     }
 
     makeMove(index) {
-        if (this.gameOver) return;
-        const cell = this.gameBoard.board[index];
-        if (!cell || cell.isRevealed || cell.flagged) return;
-        this.revealCell(index);
+        if (this.gameOver) return; 
+        const cell = this.gameBoard.board[index]; // get cell
+        if (!cell || cell.isRevealed || cell.flagged) return; // if invalid, revealed or flagged, don't do anything
+        this.revealCell(index); // reveal the cell
     }
 
     revealCell = (index) => {
-        if (this.gameOver) return;
-        const cell = this.gameBoard.board[index];
-        if (!cell || cell.isRevealed || cell.flagged) return;
+        if (this.gameOver) return; 
+        const cell = this.gameBoard.board[index]; // get cell
+        if (!cell || cell.isRevealed || cell.flagged) return; // if invalid, revealed or flagged, don't do anything
 
-        console.log(`Revealing cell ${index}`, cell);
-
-        if (cell.isMine) {
-            this.gameOver = true;
-            cell.isRevealed = true;
-            cell.innerText = 'B';
-            if (this.statusEl) this.statusEl.textContent = 'Game Over!';
-            this.gameBoard.renderBoard('game-container');
+        if (cell.isMine) { // if it's a mine
+            this.gameOver = true; // set game over
+            cell.isRevealed = true; // reveal the mine
+            cell.innerText = 'B'; // show bomb
+            this.gameBoard.renderBoard('game-container'); // render board
             return;
         }
 
-        const count = this.checkAdjacentMines(index);
-        cell.adjacentMines = count;
-        cell.innerText = count > 0 ? count : '';
-        cell.isRevealed = true;
+        // If the cell's not a mine
+        const count = this.checkAdjacentMines(index); // count adjacent mines
+        cell.adjacentMines = count; // assign count to the cell property
+        cell.innerText = count > 0 ? count : ''; // if there are adjacent mines, show text
+        cell.isRevealed = true; // reveal the cell
 
-        console.log(`Revealed cell ${index} with ${count} adjacent mines 1`);
-
-        if (count === 0) {
-            console.log("Entrando aqui");
-            this.floodReveal(index);
-        } else {
-            this.gameBoard.renderBoard('game-container');
+        if (count === 0) { // if no adjacent mines
+            this.floodReveal(index); // do the flood reveal
+        } else { // if there are adjacent mines
+            this.gameBoard.renderBoard('game-container'); // render board
         }
     }
 
@@ -48,45 +43,39 @@ class GameLogic {
         const toReveal = [index]; // cells to reveal
         const cellSeen = new Set();
 
-        console.log(toReveal);
-
-        const neighbors = this.getNeighbors(index);
-        toReveal.push(...neighbors);
-
         while(toReveal.length) { // while there are cells to reveal
             const i = toReveal.shift(); // get the first cell
             if (cellSeen.has(i)) continue;
             cellSeen.add(i);
 
-            const cell = this.gameBoard.board[i];
-            if (cell.isRevealed || cell.isMine || cell.flagged) continue; // if already revealed, mine or flagged, skip
+            const cell = this.gameBoard.board[i]; // get the cell
+            if (!cell || cell.isMine || cell.flagged) continue; // if already revealed, mine or flagged, skip
 
-            const count = this.checkAdjacentMines(i);
-            cell.adjacentMines = count;
-            cell.innerText = count > 0 ? count : '';
-            cell.isRevealed = true;
+            const count = this.checkAdjacentMines(i); // count adjacent mines
+            cell.adjacentMines = count; // assign count to the cell property
+            cell.innerText = count > 0 ? count : ''; // if there are adjacent mines, show text
+            cell.isRevealed = true; // reveal the cell
 
-            if (count === 0) {
-                const innerNeighbors = this.getNeighbors(i);
+            if (count === 0) { // if no adjacent mines
+                const innerNeighbors = this.getNeighbors(i); // get neighbors
 
-                for (const n of innerNeighbors) {
-                    const nc = this.gameBoard.board[n];
-                    if (nc.isMine || nc.flagged) continue;
+                for (const n of innerNeighbors) { // for each neighbor
+                    const newCell = this.gameBoard.board[n]; // get the cell
+                    if (!newCell || newCell.isMine || newCell.flagged) continue; // skip if mine or flagged
 
-                    const nCount = this.checkAdjacentMines(n);
-                    nc.adjacentMines = nCount;
-                    nc.isRevealed = true;
+                    const newCellCount = this.checkAdjacentMines(n); // count adjacent mines
+                    if (!newCell.isRevealed && newCellCount > 0) { // if not revealed and has adjacent mines
+                        newCell.adjacentMines = newCellCount; // assign count to the cell property
+                        newCell.innerText = String(newCellCount); // show text
+                        newCell.isRevealed = true; // reveal the cell
+                    }
 
-                    if (nCount === 0 && !cellSeen.has(n)) toReveal.push(n);
+                    if (newCellCount === 0 && !cellSeen.has(n)) toReveal.push(n); // if there are no adjacent mines and the cell is not seen, add to reveal list
                 }
-            } else{
-                cell.isRevealed = true;
-                cell.innerText = count;
-            }   
+            } 
         }
 
-        this.gameBoard.renderBoard('game-container');
-        console.log('Flood reveal complete');
+        this.gameBoard.renderBoard('game-container'); // render board
     }
 
     getNeighbors(index) {
@@ -142,7 +131,6 @@ class GameLogic {
     }
 
     toggleFlag(index){
-        console.log(`Toggling flag on cell ${index}`);
 		const cell = this.gameBoard.board[index];
 		if (!cell || cell.isRevealed) return;
 		cell.flagged = !cell.flagged;
