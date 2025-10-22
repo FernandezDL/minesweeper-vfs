@@ -201,6 +201,7 @@ body {
     border-left: solid 5px white;
     border-bottom: solid 5px grey;
     border-right: solid 5px grey;
+    color: black;
 }
 
     .cell.isRevealed {
@@ -211,4 +212,7 @@ body {
         border-right: solid 5px white;
         border-top: solid 5px grey;
         border-left: solid 5px grey;
+        color: black;
     }
+
+    .cell.flagged { background: #ffdede; }

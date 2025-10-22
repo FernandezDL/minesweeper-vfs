@@ -24,6 +24,7 @@ class GameBoard{
 		for (let index = 0; index < this.board.length; index++){
 			const cell = document.createElement('div');
 			cell.classList.add('cell');
+			cell.classList.toggle('isRevealed', this.board[index].isRevealed);
 			cell.dataset.index = index;
 			cell.textContent = this.board[index].innerText || '';
 			container.appendChild(cell);

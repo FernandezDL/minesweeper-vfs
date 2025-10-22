@@ -7,34 +7,111 @@ class GameLogic {
     }
 
     makeMove(index) {
-        if (this.gameOver || this.gameBoard[index]) return;
-
+        if (this.gameOver) return;
+        const cell = this.gameBoard.board[index];
+        if (!cell || cell.isRevealed || cell.flagged) return;
         this.revealCell(index);
     }
 
     revealCell = (index) => {
+        if (this.gameOver) return;
         const cell = this.gameBoard.board[index];
-        if (cell.isRevealed || this.gameOver) return;
-        cell.isRevealed = true;
-        
+        if (!cell || cell.isRevealed || cell.flagged) return;
+
+        console.log(`Revealing cell ${index}`, cell);
+
         if (cell.isMine) {
             this.gameOver = true;
-            console.log('Game Over!');
+            cell.isRevealed = true;
+            cell.innerText = 'B';
             if (this.statusEl) this.statusEl.textContent = 'Game Over!';
-
+            this.gameBoard.renderBoard('game-container');
             return;
         }
 
-        cell.adjacentMines = this.checkAdjacentMines(index);
-        cell.innerText = cell.adjacentMines > 0 ? cell.adjacentMines : '';
-        this.gameBoard.renderBoard('game-container');
-        console.log(cell);
+        const count = this.checkAdjacentMines(index);
+        cell.adjacentMines = count;
+        cell.innerText = count > 0 ? count : '';
+        cell.isRevealed = true;
 
-        //if (this.checkWin()) {
-        //    this.gameOver = true;
-        //    if (this.statusEl) this.statusEl.textContent = 'You Win!';
-        //}
+        console.log(`Revealed cell ${index} with ${count} adjacent mines 1`);
+
+        if (count === 0) {
+            console.log("Entrando aqui");
+            this.floodReveal(index);
+        } else {
+            this.gameBoard.renderBoard('game-container');
+        }
     }
+
+    floodReveal(index) {
+        const toReveal = [index]; // cells to reveal
+        const cellSeen = new Set();
+
+        console.log(toReveal);
+
+        const neighbors = this.getNeighbors(index);
+        toReveal.push(...neighbors);
+
+        while(toReveal.length) { // while there are cells to reveal
+            const i = toReveal.shift(); // get the first cell
+            if (cellSeen.has(i)) continue;
+            cellSeen.add(i);
+
+            const cell = this.gameBoard.board[i];
+            if (cell.isRevealed || cell.isMine || cell.flagged) continue; // if already revealed, mine or flagged, skip
+
+            const count = this.checkAdjacentMines(i);
+            cell.adjacentMines = count;
+            cell.innerText = count > 0 ? count : '';
+            cell.isRevealed = true;
+
+            if (count === 0) {
+                const innerNeighbors = this.getNeighbors(i);
+
+                for (const n of innerNeighbors) {
+                    const nc = this.gameBoard.board[n];
+                    if (nc.isMine || nc.flagged) continue;
+
+                    const nCount = this.checkAdjacentMines(n);
+                    nc.adjacentMines = nCount;
+                    nc.isRevealed = true;
+
+                    if (nCount === 0 && !cellSeen.has(n)) toReveal.push(n);
+                }
+            } else{
+                cell.isRevealed = true;
+                cell.innerText = count;
+            }   
+        }
+
+        this.gameBoard.renderBoard('game-container');
+        console.log('Flood reveal complete');
+    }
+
+    getNeighbors(index) {
+        const neighbors = []; // indices of neighboring cells
+        const rows = this.gameBoard.rows; // number of rows
+        const cols = this.gameBoard.cols; // number of columns
+        const r = Math.floor(index / cols); // row of the cell
+        const c = index % cols; // column of the cell
+
+        const deltas = [ 
+            [-1,-1], [-1,0], [-1,1],
+            [ 0,-1],         [ 0,1],
+            [ 1,-1], [ 1,0], [ 1,1],
+        ];
+
+        for (const [dr, dc] of deltas) { // for each neighbor direction
+            const nr = r + dr, nc = c + dc; // neighbor row and column
+            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) { // if within bounds
+                neighbors.push(nr * cols + nc); // add neighbor index
+            }
+        }
+
+        return neighbors;
+    }
+
 
     checkWin = () => {
         const brd = this.gameBoard.board;
@@ -54,20 +131,13 @@ class GameLogic {
                 placedMines++;
             }
         }
-        //console.log(brd);
     }
 
     checkAdjacentMines = (index) => {
-        const directions = [-1, 1, -this.gameBoard.cols, this.gameBoard.cols, -this.gameBoard.cols - 1, -this.gameBoard.cols + 1, this.gameBoard.cols - 1, this.gameBoard.cols + 1];
         let count = 0;
-        directions.forEach(dir => {
-            const neighborIndex = index + dir;
-            if (neighborIndex >= 0 && neighborIndex < this.gameBoard.board.length) {
-                if (this.gameBoard.board[neighborIndex].isMine) {
-                    count++;
-                }
-            }
-        });
+        for (const n of this.getNeighbors(index)) {
+            if (this.gameBoard.board[n].isMine) count++;
+        }
         return count;
     }
 
