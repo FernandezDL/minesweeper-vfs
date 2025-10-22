@@ -3,7 +3,7 @@ class GameLogic {
         this.gameBoard = gameBoard;
         this.gameOver = false;
         this.statusEl = document.getElementById('status');
-        this.placeMines(15);
+        this.placeMines(20);
     }
 
     makeMove(index) {
@@ -20,8 +20,11 @@ class GameLogic {
 
         if (cell.isMine) { // if it's a mine
             this.gameOver = true; // set game over
-            cell.isRevealed = true; // reveal the mine
-            cell.innerText = 'B'; // show bomb
+
+            for(const cell of this.gameBoard.board){ // checks all cells
+                if(cell.isMine) cell.isRevealed = true; // reveals all the mines
+            }
+            
             this.gameBoard.renderBoard('game-container'); // render board
             return;
         }
@@ -134,7 +137,6 @@ class GameLogic {
 		const cell = this.gameBoard.board[index];
 		if (!cell || cell.isRevealed) return;
 		cell.flagged = !cell.flagged;
-		cell.innerText = cell.flagged ? 'F' : '';
 		this.gameBoard.renderBoard('game-container');
 	}
 
