@@ -101,8 +101,8 @@ class GameLogic {
         const neighbors = []; // indices of neighboring cells
         const rows = this.gameBoard.rows; // number of rows
         const cols = this.gameBoard.cols; // number of columns
-        const r = Math.floor(index / cols); // row of the cell
-        const c = index % cols; // column of the cell
+        const row = Math.floor(index / cols); // row of the cell
+        const col = index % cols; // column of the cell
 
         const deltas = [ 
             [-1,-1], [-1,0], [-1,1],
@@ -110,10 +110,12 @@ class GameLogic {
             [ 1,-1], [ 1,0], [ 1,1],
         ];
 
-        for (const [dr, dc] of deltas) { // for each neighbor direction
-            const nr = r + dr, nc = c + dc; // neighbor row and column
-            if (nr >= 0 && nr < rows && nc >= 0 && nc < cols) { // if within bounds
-                neighbors.push(nr * cols + nc); // add neighbor index
+        for (const [deltaRow, deltaCol] of deltas) { // for each neighbor direction
+            const neighborRow = row + deltaRow; // neighbor row
+            const neighborCol = col + deltaCol; // neighbor column
+            
+            if (neighborRow >= 0 && neighborRow < rows && neighborCol >= 0 && neighborCol < cols) { // if within bounds
+                neighbors.push(neighborRow * cols + neighborCol); // add neighbor index
             }
         }
 
